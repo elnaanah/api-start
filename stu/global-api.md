@@ -1,10 +1,31 @@
+### مثال 1 — أسعار العملات
+> **API لأسعار صرف العملات** — نستخدمها للحصول على سعر عملة مقابل عملة أخرى.
+
 https://frankfurter.dev/
+
+### مثال عملي
+> **طلب GET للحصول على أسعار العملات** — الدولار مقابل الليرة التركية والليرة السورية.
+
 https://api.frankfurter.dev/v2/rates?base=usd&quotes=try,syp
 
+---
+
+### مثال 2 — سعر الذهب
+> **API لأسعار الذهب** — توفر بيانات سعر الذهب بشكل يمكن للبرامج قراءته.
 
 https://gold-api.com/docs
+
+### مثال عملي
+> **طلب GET للحصول على سعر الذهب (XAU)**.
+
 https://api.gold-api.com/price/XAU
 
-https://www.weatherapi.com/docs/#
-run in postman
+---
 
+### مثال 3 — بيانات الطقس
+> **API لبيانات الطقس** — تتيح جلب معلومات الطقس حسب الموقع، وتحتاج إلى API Key.
+
+https://www.weatherapi.com/docs/#
+
+### أداة الاختبار
+> **Postman** — نستخدمه لإرسال طلبات API وتجربة الـEndpoints ومشاهدة الـResponses.
