@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محول العملات</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 30px 15px;
+    }
+
+    body > div {
+      max-width: 350px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #ddd;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 24px;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 5px;
+    }
+
+    input, select, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin: 18px 0;
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    #result {
+      margin-top: 8px;
+      padding: 12px;
+      background: #f0f5ff;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>محول العملات</h1>
+
+    <label for="amount">المبلغ:</label>
+    <input type="number" id="amount" value="1" min="1">
+
+    <label for="from">من عملة:</label>
+    <select id="from">
+      <option value="USD">دولار (USD)</option>
+      <option value="EUR">يورو (EUR)</option>
+      <option value="TRY">ليرة تركية (TRY)</option>
+    </select>
+
+    <label for="to">إلى عملة:</label>
+    <select id="to">
+      <option value="TRY" selected>ليرة تركية (TRY)</option>
+      <option value="USD">دولار (USD)</option>
+      <option value="EUR">يورو (EUR)</option>
+    </select>
+
+    <button id="convert-btn">تحويل العملة</button>
+
+    <div>النتيجة:</div>
+    <div id="result">اضغط على تحويل لمعرفة السعر</div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
