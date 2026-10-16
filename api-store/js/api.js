@@ -1,18 +1,29 @@
 const API_URL = "https://souk-albab.vercel.app/api";
 
 async function getProducts() {
-  return [];
+  const resposive = await fetch(`${API_URL}/products`);
+  const resulet = await resposive.json();
+
+  return resulet.data || [];
 }
 
 async function createOrder(data) {
-  return {
-    success: false,
-    message: "لم يتم برمجة createOrder بعد!",
-  };
+  const response = await fetch(`${API_URL}/orders`, {
+    method: "POST",
+    headers: {"Content-Type" : "application/json"},
+    body: JSON.stringify(data)
+  });
+
+  const resulet = await response.json();
+
+  return resulet;
 }
 
 async function getOrders(phone = "") {
-  return [];
+
+  const response = await fetch(`${API_URL}/orders?phone=${encodeURIComponent(phone)}`);
+  const resulet = await response.json();
+  return resulet.data || [];
 }
 
 async function updateOrder(id, data) {
