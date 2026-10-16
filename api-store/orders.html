@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>طلباتي — متجر نهضة تقنية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Arabic"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-zinc-50 text-zinc-900 font-sans min-h-screen flex flex-col">
+
+  <!-- شريط التنقل -->
+  <header class="sticky top-0 z-40 bg-white border-b border-zinc-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+      <a href="index.html" class="text-base font-bold text-zinc-900 shrink-0">متجر نهضة تقنية</a>
+      <nav class="flex items-center gap-1 overflow-x-auto text-xs sm:text-sm font-medium py-1">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0">المنتجات</a>
+        <a href="orders.html" class="px-3 py-1.5 rounded-lg bg-zinc-900 text-white font-semibold shrink-0">طلباتي</a>
+        <a href="products.html" class="px-3 py-1.5 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0">إدارة المنتجات</a>
+        <a href="orders-admin.html" class="px-3 py-1.5 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0">لوحة الطلبات</a>
+      </nav>
+      <a
+        href="index.html"
+        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-zinc-200 text-zinc-800 transition-colors shrink-0"
+      >
+        تسوق الآن
+      </a>
+    </div>
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+
+    <!-- بطاقة البحث -->
+    <div class="bg-white border border-zinc-200 rounded-xl p-5 sm:p-6 mb-6 shadow-sm">
+      <h1 class="text-lg font-bold text-zinc-900 mb-1">🔍 الاستعلام عن طلباتك</h1>
+      <p class="text-xs text-zinc-500 mb-4">
+        المسار: <code class="bg-zinc-100 px-1 py-0.5 rounded text-[11px] font-mono">GET /api/orders?phone=...</code>
+        — يمكنك أيضاً الاستعلام برقم الطلب.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-2">
+        <input
+          id="query-input"
+          type="text"
+          placeholder="أدخل رقم هاتفك (مثال: 0999123456)"
+          onkeydown="if(event.key==='Enter') searchOrders()"
+          class="flex-1 h-10 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+        />
+        <button
+          onclick="searchOrders()"
+          class="h-10 px-5 bg-zinc-900 hover:bg-zinc-800 text-white text-sm font-semibold rounded-lg transition-colors shrink-0"
+        >
+          بحث 🔎
+        </button>
+      </div>
+    </div>
+
+    <!-- مؤشر التحميل -->
+    <p id="loading-msg" class="hidden text-center py-16 text-sm text-zinc-500">
+      جاري البحث في قاعدة البيانات...
+    </p>
+
+    <!-- حالة فارغة -->
+    <div id="empty-msg" class="hidden text-center py-16 px-4 bg-white border border-dashed border-zinc-200 rounded-xl">
+      <span class="text-3xl block mb-2">📭</span>
+      <h3 class="text-sm font-bold text-zinc-800 mb-1">لا توجد طلبات مطابقة</h3>
+      <p class="text-xs text-zinc-500">تأكد من رقم الهاتف المدخل، أو قم بإنشاء طلب جديد من المتجر.</p>
+    </div>
+
+    <!-- قائمة الطلبات -->
+    <section id="orders-list" class="space-y-4"></section>
+
+  </main>
+
+  <footer class="mt-auto border-t border-zinc-200 bg-white py-4 text-center text-xs text-zinc-500">
+    <div class="max-w-7xl mx-auto px-4">متجر نهضة تقنية — CRUD عبر REST API مع Tailwind CSS</div>
+  </footer>
+
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

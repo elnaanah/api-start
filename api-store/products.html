@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إدارة المنتجات — متجر نهضة تقنية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Arabic"', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-zinc-50 text-zinc-900 font-sans min-h-screen flex flex-col">
+
+  <!-- شريط التنقل -->
+  <header class="sticky top-0 z-40 bg-white border-b border-zinc-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+      <a href="index.html" class="text-base font-bold text-zinc-900 shrink-0">متجر نهضة تقنية</a>
+      <nav class="flex items-center gap-1 overflow-x-auto text-xs sm:text-sm font-medium py-1">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0">المنتجات</a>
+        <a href="orders.html" class="px-3 py-1.5 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0">طلباتي</a>
+        <a href="products.html" class="px-3 py-1.5 rounded-lg bg-zinc-900 text-white font-semibold shrink-0">إدارة المنتجات</a>
+        <a href="orders-admin.html" class="px-3 py-1.5 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition-colors shrink-0">لوحة الطلبات</a>
+      </nav>
+      <button
+        onclick="openPanel('create')"
+        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-white transition-colors shrink-0"
+      >
+        + إضافة منتج
+      </button>
+    </div>
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+
+    <div class="mb-6">
+      <h1 class="text-xl sm:text-2xl font-bold text-zinc-900 mb-1">لوحة إدارة المنتجات</h1>
+      <p class="text-xs sm:text-sm text-zinc-500">
+        <code class="bg-zinc-100 text-emerald-700 px-1.5 py-0.5 rounded font-mono text-xs">POST /api/products</code>
+        &nbsp;|&nbsp;
+        <code class="bg-zinc-100 text-amber-700 px-1.5 py-0.5 rounded font-mono text-xs">PUT /api/products/:id</code>
+        &nbsp;|&nbsp;
+        <code class="bg-zinc-100 text-red-700 px-1.5 py-0.5 rounded font-mono text-xs">DELETE /api/products/:id</code>
+      </p>
+    </div>
+
+    <!-- مؤشر التحميل -->
+    <div id="loading-msg" class="text-center py-20 text-sm text-zinc-500">
+      جاري تحميل المنتجات من السيرفر...
+    </div>
+
+    <!-- حالة فارغة -->
+    <div id="empty-msg" class="hidden text-center py-16 px-4 bg-white border border-dashed border-zinc-200 rounded-xl max-w-md mx-auto">
+      <span class="text-3xl block mb-2">📦</span>
+      <h3 class="text-sm font-bold text-zinc-800 mb-1">لا توجد منتجات حتى الآن</h3>
+      <p class="text-xs text-zinc-500">أضف أول منتج بالضغط على الزر أعلاه.</p>
+    </div>
+
+    <!-- جدول المنتجات -->
+    <div id="table-wrap" class="hidden bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-right text-xs sm:text-sm">
+          <thead class="bg-zinc-50 border-b border-zinc-200 text-zinc-600 font-semibold">
+            <tr>
+              <th class="py-3 px-4">الصورة</th>
+              <th class="py-3 px-4">المنتج</th>
+              <th class="py-3 px-4">المعرف (ID)</th>
+              <th class="py-3 px-4">السعر</th>
+              <th class="py-3 px-4">المخزون</th>
+              <th class="py-3 px-4 text-center">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody" class="divide-y divide-zinc-100"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- خلفية اللوحة الجانبية (Backdrop) -->
+  <div
+    id="backdrop"
+    onclick="closePanel()"
+    class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity"
+  ></div>
+
+  <!-- اللوحة الجانبية (Drawer Panel) -->
+  <aside
+    id="side-panel"
+    class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white border-l border-zinc-200 flex flex-col translate-x-full transition-transform duration-200 ease-in-out shadow-2xl"
+  >
+    <div class="p-5 border-b border-zinc-200 flex items-center justify-between shrink-0">
+      <div>
+        <span id="panel-endpoint" class="inline-block px-2 py-0.5 rounded font-mono text-[11px] font-semibold mb-1"></span>
+        <h2 id="panel-title" class="text-base font-bold text-zinc-900"></h2>
+      </div>
+      <button onclick="closePanel()" class="text-zinc-400 hover:text-zinc-700 text-xl font-bold p-1">✕</button>
+    </div>
+
+    <div class="p-5 flex-1 overflow-y-auto space-y-4">
+      <div id="panel-note" class="p-3 rounded-lg bg-zinc-50 border border-zinc-100 text-xs text-zinc-600 leading-relaxed"></div>
+
+      <div>
+        <label for="f-title" class="block text-xs font-semibold text-zinc-700 mb-1">اسم المنتج *</label>
+        <input id="f-title" type="text" placeholder="مثال: iPhone 15 Pro" class="w-full h-9 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900" />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label for="f-price" class="block text-xs font-semibold text-zinc-700 mb-1">السعر ($) *</label>
+          <input id="f-price" type="number" min="0" step="0.01" placeholder="299.99" class="w-full h-9 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900" />
+        </div>
+        <div>
+          <label for="f-stock" class="block text-xs font-semibold text-zinc-700 mb-1">المخزون *</label>
+          <input id="f-stock" type="number" min="0" placeholder="50" class="w-full h-9 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900" />
+        </div>
+      </div>
+
+      <div>
+        <label for="f-desc" class="block text-xs font-semibold text-zinc-700 mb-1">الوصف *</label>
+        <textarea id="f-desc" rows="3" placeholder="أدخل تفاصيل ومواصفات المنتج..." class="w-full p-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 resize-none"></textarea>
+      </div>
+
+      <div>
+        <label for="f-image" class="block text-xs font-semibold text-zinc-700 mb-1">رابط الصورة (اختياري)</label>
+        <input id="f-image" type="text" placeholder="https://..." class="w-full h-9 px-3 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900" />
+      </div>
+    </div>
+
+    <div class="p-5 border-t border-zinc-200 flex gap-2 shrink-0 bg-zinc-50">
+      <button id="panel-submit-btn" onclick="submitPanel()" class="flex-1 h-10 bg-zinc-900 hover:bg-zinc-800 text-white text-xs sm:text-sm font-semibold rounded-lg transition-colors"></button>
+      <button onclick="closePanel()" class="h-10 px-4 bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-100 text-xs sm:text-sm font-semibold rounded-lg transition-colors">إلغاء</button>
+    </div>
+  </aside>
+
+  <!-- إشعار Toast منبثق -->
+  <div
+    id="toast"
+    class="fixed top-6 left-1/2 -translate-x-1/2 opacity-0 pointer-events-none transition-opacity duration-200 z-50 px-4 py-2 rounded-full text-xs font-semibold text-white bg-zinc-900 shadow-lg"
+  ></div>
+
+  <footer class="mt-auto border-t border-zinc-200 bg-white py-4 text-center text-xs text-zinc-500">
+    <div class="max-w-7xl mx-auto px-4">متجر نهضة تقنية — CRUD عبر REST API مع Tailwind CSS</div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -30,3 +30,12 @@ npm install express
 
 node index.js
     تشغيل ملف جافا سكربت
+
+---
+
+### مشروع المتجر الإلكتروني (api-store)
+* التوثيق المرجعي الكامل ودليل مهام الطالب: `api-store/README.md`
+* مساحة عمل الطالب: `api-store/js/api.student.js`
+* محرك الواجهة الموحد: `api-store/js/app.js`
+* الحل النموذجي المرجعي: `api-store/js/api.js`
+
