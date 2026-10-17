@@ -687,7 +687,7 @@ async function loadAdminProducts() {
             </button>
 
             <button
-              onclick="confirmDeleteProduct('${product.id}', ${JSON.stringify(product.title || "")})"
+              onclick="confirmDeleteProduct('${encodeURIComponent(String(product.id)).replace(/'/g, "%27")}', '${encodeURIComponent(String(product.title || "")).replace(/'/g, "%27")}')"
               class="px-2.5 py-1 text-xs bg-red-50 text-red-600 rounded-md"
             >
               حذف
@@ -839,6 +839,9 @@ async function submitProductPanel() {
 
 // حذف منتج
 async function confirmDeleteProduct(id, title) {
+  id = decodeURIComponent(id);
+  title = decodeURIComponent(title);
+
   if (!confirm(`هل تريد حذف المنتج "${title}"؟`)) return;
 
   try {

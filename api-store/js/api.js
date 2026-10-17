@@ -27,42 +27,68 @@ async function getOrders(phone = "") {
 }
 
 async function updateOrder(id, data) {
-  return {
-    success: false,
-    message: "لم يتم برمجة updateOrder بعد!",
-  };
+  const response = await fetch(`${API_URL}/orders/${id}`, {
+    method: "PUT",
+    headers: {"Content-Type" : "application/json"},
+    body: JSON.stringify(data)
+  });
+
+  const resulet = await response.json();
+
+  return resulet;
 }
 
 async function deleteOrder(id) {
-  return {
-    success: false,
-    message: "لم يتم برمجة deleteOrder بعد!",
-  };
+  const response = await fetch(`${API_URL}/orders/${id}`, {
+    method: "DELETE",
+  });
+
+  const resulet = await response.json();
+
+  return resulet;
 }
 
+
 async function getProductById(id) {
-  return null;
+  const response = await fetch(`${API_URL}/products/${id}`);
+  const resulet = await response.json();
+ 
+  return resulet.data || null; return null;
 }
 
 async function createProduct(data) {
-  return {
-    success: false,
-    message: "لم يتم برمجة createProduct بعد!",
-  };
+  const response = await fetch(`${API_URL}/products`, {
+    method: "POST",
+    headers: {"Content-Type" : "application/json"},
+    body: JSON.stringify(data)
+  });
+
+  const resulet = await response.json();
+
+  return resulet;
 }
 
 async function updateProduct(id, data) {
-  return {
-    success: false,
-    message: "لم يتم برمجة updateProduct بعد!",
-  };
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: "PUT",
+    headers: {"Content-Type" : "application/json"},
+    body: JSON.stringify(data)
+  });
+
+  const resulet = await response.json();
+
+  return resulet;
+
 }
 
 async function deleteProduct(id) {
-  return {
-    success: false,
-    message: "لم يتم برمجة deleteProduct بعد!",
-  };
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    method: "DELETE",
+  });
+
+  const resulet = await response.json();
+
+  return resulet;
 }
 
 async function updateOrderStatus(id, status) {
